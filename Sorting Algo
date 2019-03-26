@@ -1,0 +1,177 @@
+import random
+import time
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# BUBBLE SORT
+
+def bubble(list):
+    steps = 0
+    for i in range (1, len(list)):
+        steps += 1
+        for j in range (len(list)-1, 0, -1):
+            steps += 1
+            if list[j] < list[j-1]:
+                steps+=1
+                list[j], list[j-1] = list[j-1], list[j]
+                steps += 1
+    return steps
+# l = random.sample(range(100), 20)
+# l = [68, 18, 73, 64, 75, 32, 23, 1, 80, 92, 8, 53, 37, 90, 95, 46, 61, 44, 9, 88]
+# bubble(l)
+
+S = [] #steps
+N = [] #number of element in the list
+
+for i in range (5, 100):
+    l = random.sample(range(1000), i)
+    S.append(bubble(l))
+    N.append(i)
+
+
+# y = steps
+# x = len(l)
+plt.figure(figsize=(10, 8), dpi=80)
+plt.scatter(N, S, alpha = 0.8, s=10)
+plt.ylabel("Steps")
+plt.xlabel("List length")
+plt.title("Bubble sort")
+plt.show()
+
+# SELECTION SORT
+
+def selection(list):
+    steps = 0
+    for i in range(len(list)):
+        steps += 1
+        min_n = i
+        steps +=1
+        for j in range(i+1, len(list)):
+            steps += 1
+            if list[min_n]> list[j]:
+                steps += 1
+                min_n = j
+                steps+=1
+        list[i], list[min_n] = list[min_n], list[i]
+        steps+=1
+    return steps
+
+Step_selection = []
+N_selection = []
+# l = random.sample(range(100), 20)
+for i in range (5, 100):
+    l = random.sample(range(1000), i)
+    Step_selection.append(selection(l))
+    N_selection.append(i)
+
+
+# y = steps
+# x = len(l)
+plt.figure(figsize=(10, 8), dpi=80)
+plt.scatter(N_selection, Step_selection, alpha=0.8, s=10, color = "red")
+plt.ylabel("Steps")
+plt.xlabel("List length")
+plt.title("Selection sort")
+plt.show()
+
+# INSERTION SORT
+
+def insertion(list):
+    steps = 0
+    for j in range (len(list)):
+        steps +=1
+        key = list[j]
+        steps +=1
+        i = j - 1
+        steps +=1
+        while (i >= 0) and (list[i] > key):
+            steps +=1
+            list[i+1] = list[i]
+            steps +=1
+            i = i - 1    
+        list[i + 1] = key
+        steps+=1
+    return steps
+
+Step_insertion = []
+N_insertion = []
+# l = random.sample(range(100), 20)
+for i in range (5, 100):
+    l = random.sample(range(1000), i)
+    Step_insertion.append(insertion(l))
+    N_insertion.append(i)
+
+
+# y = steps
+# x = len(l)
+plt.figure(figsize=(10, 8), dpi=80)
+plt.scatter(N_insertion, Step_insertion, alpha=0.8, s=10, color = "green")
+plt.ylabel("Steps")
+plt.xlabel("List length")
+plt.title("Insertion sort")
+plt.show()
+
+
+# MERGE SORT (METHOD ONE)
+
+def merge_sort(list):
+    steps = 0
+    if len(list) > 1:
+        steps +=1
+        mid = len(list)//2
+        steps +=1
+        list1, list2 = list[:mid], list[mid:]
+        steps +=1
+        merge_sort(list1)
+        steps +=1
+        merge_sort(list2)
+        steps +=1
+        i, j, k = 0, 0, 0
+        steps +=1
+        while i < len(list1) and j < len(list2):
+            steps +=1
+            if list1[i] < list2[j]:
+                steps +=1
+                list[k] = list1[i]
+                steps +=1
+                i +=1
+            else:
+                steps +=1
+                list[k] = list2[j]
+                steps +=1
+                j +=1
+            steps +=1
+            k +=1
+        while i < len(list1):
+            steps +=1
+            list[k] = list1[i]
+            steps +=1
+            i +=1
+            steps +=1
+            k +=1
+        while j < len(list2):
+            steps +=1
+            list[k] = list2[j]
+            steps +=1
+            j +=1
+            steps +=1
+            k +=1
+    return steps
+
+
+Step_merge = []
+N_merge = []
+# l = random.sample(range(100), 20)
+for i in range (5, 100):
+    l = random.sample(range(1000), i)
+    Step_merge.append(merge_sort(l))
+    N_merge.append(i)
+
+
+plt.figure(figsize=(10, 8), dpi=80)
+plt.scatter(N_merge, Step_merge, alpha=0.8, s=10, color = "purple")
+plt.ylabel("Steps")
+plt.xlabel("List length")
+plt.title("Merge sort")
+plt.show()
