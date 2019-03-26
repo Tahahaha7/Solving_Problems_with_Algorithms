@@ -1,3 +1,3 @@
-# CS110 Python
+# CS110 
 ## Solving Problems with Algorithms
-### Environment: RStudio
+### Environment: Python
