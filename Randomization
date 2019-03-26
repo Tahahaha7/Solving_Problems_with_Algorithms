@@ -1,0 +1,74 @@
+# coin toss
+import math
+import random
+import time
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def coinToss(number):
+    # number = input("Number of times to flip coin: ")
+    record = " "
+    for i in range(int(number)):
+        flip = random.random()
+        if (flip > 0.5):
+            record = record + "H"
+        else:
+            record = record + "T"
+    HTH, HHT = record.count("HTH"), record.count("HHT")
+    Total = HTH + HHT
+    #print("Pattern HTH: ", record.count("HTH"), "Freq: ", HTH/Total)
+    #print("Pattern HHT: ", record.count("HHT"), "Freq: ", HHT/Total)
+    return HTH/Total, HHT/Total
+
+
+Z1, Y1, X1 = [], [], []
+for i in range(100, 10000, 10):
+    X1.append(i)
+    Y1.append(coinToss(i)[0])
+    Z1.append(coinToss(i)[1])
+
+
+plt.figure(figsize=(10, 8))
+plt.plot(X1, Y1, label='HTH pattern') #, alpha = 0.8, s=7, marker='o')
+plt.plot(X1, Z1, label='HHT pattern')
+plt.xlabel("Number of tosses")
+plt.title("Patterns likelihood")
+plt.legend(loc=1)
+# print(Z1, Y1)
+plt.show()
+# further analysis:
+# the frequency of the patterns as the number of tosses increase
+# the banana problem and rolling the dice to compare
+# the different distributions of different events and how they match reality
+
+
+# the order at which the candidate would appear for the interview would take n!
+
+# random.uniform(0, 1)
+def hire_assistant(n):
+    hired, best = [], 0
+    for i in range (1, n):
+        quality = random.uniform(0, 1)
+        # tot_i += i_cost
+        if quality > best:
+            best = quality
+            hired.append(i)
+            # tot_h += h_cost
+    return hired
+# hire_assistant(100)
+
+# plot the hiring candidates agaisnt the numbero all applicants
+Z1, Y1 = [], []
+for i in range(10, 10010, 1):
+    Y1.append(len(hire_assistant(i)))
+
+Z1 = np.mean(np.array(Y1).reshape(-1, 10), axis=1)    
+X = [j for j in range(10, 1010, 10)]
+plt.figure(figsize=(10, 8))
+plt.plot(Z1, c='deepskyblue') #, alpha = 0.8, s=7, marker='o')
+plt.plot(X, [np.log2(i) for i in X], c='r', linestyle='--')
+plt.xlabel("Number of candidates")
+plt.title("Candidates hired")
+# plt.ylim(0, 30)
+plt.show()
