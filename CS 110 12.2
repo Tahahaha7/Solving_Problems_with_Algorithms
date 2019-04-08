@@ -1,0 +1,82 @@
+# CS 110 Readings for session 12.2
+# Code puplished by Mrs Rebecca Nesson
+# Retrieved from: https://gist.github.com/rebeccanesson/4789f1abb38dcb08752e877f3dbea415
+
+## Graph
+class Node: 
+    
+    BLACK = 'B'
+    GRAY = 'G'
+    WHITE = 'W'
+    
+    def __init__(self, name, adj_list=None, weighted_adj_list=None): 
+        self.name = name
+        self.color = Node.WHITE
+        self.pi = None
+        self.dist = float('inf')
+        self.adj_list = adj_list
+        if not adj_list: 
+            self.adj_list = []
+        
+    def add_edge(self, node): 
+        if node.name not in self.adj_list: 
+            self.adj_list.append(node.name)
+        
+    def remove_edge(self, node): 
+        self.adj_list.remove(node.name)
+        
+    def to_string(self): 
+        res = self.name + ': [' + ' '.join(self.adj_list) + '] color: ' + self.color + ' dist: ' + str(self.dist)
+        if not self.pi:
+            res += ' pi: Nil'
+        else: 
+            res += ' pi: ' + self.pi
+        return res
+
+class Graph: 
+    
+    def __init__(self, nodes={}): 
+        self.nodes = nodes
+        
+    def add_node(self,node): 
+        self.nodes[node.name] = node
+        
+    def add_edge(self,n1,n2): 
+        self.nodes[n1].add_edge(self.nodes[n2])
+        
+    def remove_edge(self, n1, n2): 
+        self.nodes[n1].remove_edge(self.nodes[n2])
+        
+    def to_string(self): 
+        res = ""
+        for n in self.nodes.keys(): 
+            res += self.nodes[n].to_string() + ", "
+        return res
+
+## Python Implementation of the Breadth First Search algorithm
+
+    def relax(u,v): 
+    # your code goes here!!!
+    if v.dist > u.dist + u.weighted_adj_list[v.name]:
+        v.dist = u.dist + u.weighted_adj_list[v.name]
+        v.pi = u.name
+        
+    def bellman_ford(G,s): 
+    initialize_single_source(G,s)
+    for i in range(len(G.nodes)): 
+        for _,u in G.nodes.items(): 
+            for vname,weight in u.weighted_adj_list.items(): 
+                v = G.nodes[vname]
+                relax(u,v)
+
+g = Graph({})
+g.add_node(Node('r', ['s','v']))
+g.add_node(Node('s', ['r','w']))
+g.add_node(Node('t', ['w','x','u']))
+g.add_node(Node('u', ['t','x','y']))
+g.add_node(Node('v', ['r']))
+g.add_node(Node('w', ['s','t','x']))
+g.add_node(Node('x', ['w','t','u','y']))
+g.add_node(Node('y', ['u','x']))
+
+print(g.to_string())
