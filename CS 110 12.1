@@ -1,0 +1,77 @@
+# Money game
+import numpy as np
+import random
+
+# NO STRATEGY
+def no_strategy(coins):
+    # if the list has a negative value or it's empty ? [Optional]
+    
+    p1, p2 = [], []
+    while coins != [] and len(coins) > 1:
+        choice1 = max(coins[0], coins[-1])
+        p1.append(choice1)
+        coins.remove(choice1)
+        
+        choice2 = max(coins[0], coins[-1])
+        p2.append(choice2)
+        coins.remove(choice2)
+
+    print('P1: ', p1,'\nP2: ', p2)
+    print('\nP1 sum: ', sum(p1),'\nP2 sum: ', sum(p2))
+    return max(sum(p1), sum(p2))
+L = [2, 20, 15, 1, 8, 5, 50, 40, 10, 30]
+no_strategy(L)
+
+# OPTIMAL STRATEGY
+
+L = [2, 20, 15, 1, 8, 5, 50, 40, 10, 30]
+
+def opt_strategy(money): 
+
+    table = [[0 for i in range(len(money))] 
+                for i in range(len(money))]
+    for _ in range(len(money)): 
+        for j in range(_, len(money)): 
+            i = j - _ 
+            
+            x, y, z = 0, 0, 0
+            if((i + 2) <= j): 
+                x = table[i + 2][j] 
+            if((i + 1) <= (j - 1)): 
+                y = table[i + 1][j - 1] 
+            if(i <= (j - 2)): 
+                z = table[i][j - 2] 
+            table[i][j] = max(money[i] + min(x, y), 
+                              money[j] + min(y, z)) 
+    return table[0][len(money)-1]
+opt_strategy(L)
+
+
+# Exchange rates
+
+XR = [[1, 0.741, 0.657, 1.061, 1.005], 
+     [1.349, 1, 0.888, 1.433, 1.366], 
+     [1.521, 1.126, 1, 1.614, 1.538], 
+     [0.942, 0.698, 0.619, 1, 0.953], 
+     [0.995, 0.732, 0.650, 1.049, 1]]
+
+# defining the currencies:
+    # USD coded as 0
+    # EUR coded as 1
+    # GBP coded as 2
+    # CHF coded as 3
+    # CAD coded as 4
+
+def exchange(c1, c2, rates, amount):
+    store = [[0]*len(rates)] * len(rates)
+    # looping through the whole matrix of exchange rates
+    for i in range(0, len(rates)):
+        for j in range(i, len(rates)):
+            for k in range(0, len(rates)):
+                chained_rate = rates[i][k] * rates[k][j]
+                if chained_rate > rates[i][j]:
+                    rates[i][j] = chained_rate
+                    store[i][j] = k
+    return amount * rates[c1][c2]
+
+exchange(0, 2, XR, 100)
