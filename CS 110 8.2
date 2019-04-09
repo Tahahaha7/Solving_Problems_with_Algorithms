@@ -1,0 +1,122 @@
+import random
+from random import randint
+
+
+
+class Node:
+    def __init__(self, val):
+        self.l_child = None
+        self.r_child = None
+        self.parent = None
+        self.data = val
+
+def insert(root, node):
+    # """inserts a node into a tree rooted at root, returns the root"""
+    if root is None:
+        root = node
+    else:
+        if root.data > node.data:
+            if root.l_child is None:
+                root.l_child = node
+                node.parent = root
+            else:
+                insert(root.l_child, node)
+        else:
+            if root.r_child is None:
+                root.r_child = node
+                node.parent = root
+            else:
+                insert(root.r_child,node)
+    return root
+
+def search(root, value):
+    # """searches a tree rooted at root for a node with data = value, returns the node if found, None otherwise"""
+    # Your code goes here
+    if root == None or value == root.key:
+        return root
+    if value < root.key:
+        return search(root.left, value)
+    else:
+        return search(root.right, value)
+
+
+def search_data(root, value): 
+    node = search(root, value)
+    if node: 
+        return node.data
+    else: 
+        return node
+
+
+def delete(root, value):
+    # """if a node with data = value is present in the tree rooted at root, deletes that node and returns the root"""
+    # Your code goes here
+
+    
+def inorder(root): 
+    # """returns a list of all data in the tree rooted at root produced using an in order traversal"""
+    # Your code goes here
+    if root == None:
+        return
+    else:
+        inorder(root.left)
+        print(root.key)
+        inorder(root.right)
+    
+    
+def to_string(root): 
+    # """returns a string with the relevant binary tree structure associated with the BST with the given root """
+    if not root: 
+        return 'Nil'
+    else: 
+        r = to_string(root.r_child) if root.r_child else 'Nil'
+        l = to_string(root.l_child) if root.l_child else 'Nil'
+        return 'Node(' + str(root.data) + ' L: ' + l + ' R: ' + r + ')'
+###
+### Simple List Code
+###
+
+def list_insert(lst, value): 
+    # """inserts value into lst in sorted order"""
+    # Your code goes here
+    lst.append(value)
+    lst = sorted(lst)
+            
+def list_delete(lst, value): 
+    # """ deletes first instance of value from lst if it present"""
+    if value in lst:
+        lst.remove(value)
+    
+    
+    
+def list_search(lst, value): 
+    # """ searches lst for value and returns value if present, None if it is not present"""
+    if value in lst:
+        return value
+    else:
+        return None
+    
+###
+### Testing Code
+###
+
+import random
+bst = None
+lst = []
+
+for x in [Node(random.randint(0,100)) for _ in range(50)]: 
+    if not bst: 
+        bst = x
+    else: 
+        insert(bst, x)
+    list_insert(lst, x.data)
+    
+for x in [random.randint(0,100) for _ in range(50)]: 
+    bst = delete(bst, x)
+    list_delete(lst,x)
+
+for x in [random.randint(0,100) for _ in range(50)]: 
+    print(x, search_data(bst, x), list_search(lst, x))
+    
+print(inorder(bst))
+print(lst)
