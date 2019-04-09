@@ -1,0 +1,66 @@
+import random 
+random.seed(123)
+from random import randint
+import heapq
+
+# Median heap
+
+L1 = [randint(0, 50) for i in range(10)]
+L2 = [randint(0, 50) for i in range(10)]
+heapq._heapify_max(L1) # build a max-heap
+heapq.heapify(L2) # build a min-heap
+
+def add_to_median_heap(minh,maxh,elem):
+    if elem <= maxh[0]:
+        heapq.heappush(maxh, elem)
+        heapq._heapify_max(maxh)
+
+    if elem > minh[0]:
+        heapq.heappush(minh, elem)
+        heapq.heapify(minh)
+
+
+def median(minh,maxh):
+    if len(minh) > len(maxh):
+        median = minh[0]
+    elif len(minh) < len(maxh):
+        median = maxh[0]
+    else:
+        median = (len(maxh)+len(minh))//2
+    return median
+
+
+minh = [randint(10, 20) for i in range(10)]
+maxh = [randint(10, 20) for i in range(10)]
+
+for a in range(1,100,2):
+    add_to_median_heap(minh,maxh,a)
+
+print(medianHeap(minh,maxh))
+
+
+# Quick_select
+def partition(A, P, R):
+    x = A[P]
+    i = P
+    for j in range(P+1, R):
+        if x >= A[i]:
+            i += 1
+            A[i], A[j] = A[j], A[i]
+    A[P], A[i] = A[i], A[P]
+    return i
+
+def qselect(L, k):
+    def quickselect(L, P, R):
+        x = partition(L, P, R)
+        if x == k:
+            return
+        elif x < k:
+            quickselect(L, x+1, R)
+        elif x > k:
+            quickselect(L, P, x)
+    quickselect(L, 0, len(L))
+    return L[k]
+
+L1 = [randint(0, 50) for i in range(10)]
+qselect(L1, 3)
