@@ -1,0 +1,79 @@
+# Direct address tables
+
+def direct_address(N): # create a table of empty guesses
+    table = ['' for i in range(N)]
+    return table 
+
+def add(table, guess, i): # adds an entry i to the table
+    table[i] = guess 
+    return table 
+
+
+def clear(table, i): # remove an entry i from the table
+    del table[i]
+    return table 
+
+
+# Chained Hash tables
+
+import random
+import string
+
+
+def randomword(length):
+    return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
+
+
+def empty_hash_table(N):
+    return [[] for n in range(N)]
+
+
+def add_to_hash_table(hash_table, item, hash_function):
+    N = len(hash_table)
+    x = hash_function(item) 
+    hash_table[x].append(item)
+    return hash_table
+
+
+def contains(hash_table, item, hash_function):
+    N = len(hash_table)
+    x = hash_function(item)
+    for i in hash_table[x]: 
+        if i == item: 
+            return True 
+    return False 
+
+def remove(hash_table, item, hash_function):
+    if not contains(hash_table, item, hash_function):
+        raise ValueError()
+    x = hash_function(item)
+    for i in hash_table(x): 
+        if i == item: 
+            del i
+    return hash_table
+
+
+def hash_str1(string):
+    ans = 0
+    for chr in string:
+        ans += ord(chr)
+    return ans
+
+
+def hash_str2(string):
+    ans = 0
+    for chr in string:
+        ans = ans ^ ord(chr)
+    return ans
+
+
+def hash_str3(string):
+    ans = 0
+    for chr in string:
+        ans = ans * 128 + ord(chr)
+    return ans
+
+
+def hash_str4(string):
+    random.seed(ord(string[0]))
+    return random.getrandbits(32)
