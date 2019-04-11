@@ -1,0 +1,69 @@
+import random
+import matplotlib.pyplot as plt
+from statistics import mean
+
+# Problem 1
+
+def bad_sort(L): #function 1
+    tries = 0
+    while sorted(L) != L: # used an embaded function that checks if the random list matches the sorted list
+        L = random.sample(L, len(L)) # shuffles the original list
+        tries += 1
+    return tries
+
+
+
+def worst_sort(L): # function 2
+    tries = 0
+    while not(all(L[i] <= L[i + 1] for i in range(len(L)-1))): # checks that all entries are in ascending order
+        L = random.sample(L, len(L))
+        tries += 1 # recording the number of tries 
+    return tries
+
+def avrg_tries(trails, Len): # average out of 10 tries for a given length of a list
+    ly = []
+    List = random.sample(range(0, 10), Len)
+    for i in range (1, trails):
+        ly.append(worst_sort(List))
+    return mean(ly)
+
+X, tries = [], []
+for i in range(3, 10):
+    X.append(i)
+    tries.append(avrg_tries(10, i)) 
+
+
+
+plt.figure(figsize=(10, 8))
+plt.plot(X, tries)
+plt.xlabel("List length")
+plt.ylabel("Tries")
+plt.title("Average number of tries")
+plt.show()
+
+
+# Problem 2
+from statistics import median
+import numpy as np
+import time
+
+def approx_median(L, δ):
+    tries, choice = 0, L[0]
+    while not (choice > np.percentile(L, 50-(δ/2)) and choice < np.percentile(L, 50+(δ/2))):
+        tries += 1
+        choice = random.choice(L)
+    
+    if tries <= len(L)//2:
+        return tries, choice
+    else:
+        return tries, 'Nada'
+
+
+for i in range (10, 20):
+    aprx = []
+    List = random.sample(range(0, 100), i)
+    start = time.time()
+    aprx = approx_median(List, 20)
+    end = time.time()
+    t = end - start
+    print('Time: ', round(t, 5), 'tries: ', aprx[0], 'choice: ', aprx[1], '\n')
