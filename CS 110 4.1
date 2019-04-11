@@ -1,0 +1,38 @@
+import math
+import random
+
+# building the max heapify 
+def build_max_heapify(A):
+    for i in reversed(range(math.ceil(len(A) / 2))):
+        max_heapify(A, i)
+    return A
+
+def max_heapify(A, i):
+    l = 2 * i + 1
+    r = 2 * i + 2
+    n = len(A) -1 
+    if l <= n and A[l] > A[i]:
+        largest = l
+    else:
+        largest = i
+    if r <= n and A[r] > A[largest]:
+        largest = r
+    if largest != i:
+        A[i], A[largest] = A[largest], A[i]
+        max_heapify(A, largest)
+
+
+# adding an element to the heap while conserving the structure
+def heap_push(L, x):
+    L.append(x)
+    build_max_heapify(L)
+
+# popping the max element from the heap
+def heap_pop(L):
+    build_max_heapify(L)
+    return L[0]
+
+N = random.sample(range(0, 100), 20)
+build_max_heapify(N)
+heap_push(N, 50)
+heap_pop(N)
