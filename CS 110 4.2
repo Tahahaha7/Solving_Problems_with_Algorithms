@@ -1,0 +1,50 @@
+# The hats problem
+
+def hats(n):
+    success = 0
+    guests = list(range(1, n+1))
+    mis_hat = random.sample(guests, len(guests))
+    for i in range(1, n):
+        if guests[i] == mis_hat[i]:
+            success+=1
+    return success/n
+
+X, Y = [], []
+for i in range(5, 500, 10):
+    X.append(i)
+    Y.append(hats(i))
+
+plt.figure(figsize=(10, 8))
+plt.plot(X, Y) #, alpha = 0.8, s=7, marker='o')
+plt.xlabel("Number of guests")
+plt.title("Accuracy of hat return")
+plt.show()
+
+
+# the order at which the candidate would appear for the interview would take n!
+
+# random.uniform(0, 1)
+def hire_assistant(n):
+    hired = []
+    best = 0
+    for i in range (1, n):
+        quality = random.uniform(0, 1)
+        if quality > best:
+            best = quality
+            hired.append(i)
+    return hired
+hire_assistant(100)
+
+# plot the hiring candidates agaisnt the numbero all applicants
+Z1, Y1 = [], []
+for i in range(10, 10010, 1):
+    Y1.append(len(hire_assistant(i)))
+
+Z1 = np.mean(np.array(Y1).reshape(-1, 50), axis=1)    
+
+plt.figure(figsize=(10, 8))
+plt.plot(Z1) #, alpha = 0.8, s=7, marker='o')
+plt.xlabel("Number of candidates")
+plt.title("Candidates hired")
+# plt.ylim(0, 30)
+plt.show()
