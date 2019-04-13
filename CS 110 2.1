@@ -1,0 +1,66 @@
+# MERGE SORT
+
+# MERGE SORT (METHOD ONE)
+
+def merge_sort(list):
+    steps = 0
+    if len(list) > 1:
+        steps +=1
+        mid = len(list)//2
+        steps +=1
+        list1, list2 = list[:mid], list[mid:]
+        steps +=1
+        merge_sort(list1)
+        steps +=1
+        merge_sort(list2)
+        steps +=1
+        i, j, k = 0, 0, 0
+        steps +=1
+        while i < len(list1) and j < len(list2):
+            steps +=1
+            if list1[i] < list2[j]:
+                steps +=1
+                list[k] = list1[i]
+                steps +=1
+                i +=1
+            else:
+                steps +=1
+                list[k] = list2[j]
+                steps +=1
+                j +=1
+            steps +=1
+            k +=1
+        while i < len(list1):
+            steps +=1
+            list[k] = list1[i]
+            steps +=1
+            i +=1
+            steps +=1
+            k +=1
+        while j < len(list2):
+            steps +=1
+            list[k] = list2[j]
+            steps +=1
+            j +=1
+            steps +=1
+            k +=1
+    return steps
+
+
+Step_merge = []
+N_merge = []
+# l = random.sample(range(100), 20)
+for i in range (5, 100):
+    l = random.sample(range(1000), i)
+    Step_merge.append(merge_sort(l))
+    N_merge.append(i)
+
+
+# y = steps
+# x = len(l)
+plt.figure(figsize=(10, 8), dpi=80)
+plt.scatter(N_merge, Step_merge, alpha=0.8, s=10, color = "purple")
+plt.ylabel("Steps")
+plt.xlabel("List length")
+plt.title("Merge sort")
+plt.show()
